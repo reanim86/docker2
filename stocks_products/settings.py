@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'stocks_products.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'netology_stocks_products',
+        'HOST': 'postgredb',
+        'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD': 'Tehn89tehn',
     }
 }
 
