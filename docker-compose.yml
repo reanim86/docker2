@@ -25,6 +25,7 @@ services:
 
   python_service:
     build: .
+    command: bash -c "python manage.py migrate && gunicorn stocks_products.wsgi -b 0.0.0.0:8000"
     environment:
       - MY_ENV=stocks_products
     ports:
@@ -32,7 +33,5 @@ services:
     depends_on:
       - postgredb
 
-  dbeaver:
-    image: dbeaver/cloudbeaver:latest
-    ports:
-      - "9000:8978"
+  nginx:
+    image: nginx
