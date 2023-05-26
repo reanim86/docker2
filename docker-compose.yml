@@ -2,6 +2,7 @@ version: '3.9'
 
 volumes:
   pgdata:
+  static_volume:
 
 services:
 
@@ -25,13 +26,21 @@ services:
 
   python_service:
     build: .
-    command: bash -c "python manage.py migrate && gunicorn stocks_products.wsgi -b 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --no-input --clear && gunicorn stocks_products.wsgi -b 0.0.0.0:8000"
+    volumes:
+      - static_volume:/src/static
     environment:
       - MY_ENV=stocks_products
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     depends_on:
       - postgredb
 
   nginx:
-    image: nginx
+    build: ./nginx
+    volumes:
+      - static_volume:/src/static
+    ports:
+      - 80:80
+    depends_on:
+      - python_service
